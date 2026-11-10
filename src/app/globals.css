@@ -1,0 +1,75 @@
+/*
+ * Глобальные стили приложения.
+ *
+ * Порядок слоёв:
+ *   1. Tailwind CSS v4 (CSS-first конфигурация)
+ *   2. Design tokens из src/styles/tokens.css
+ *   3. Маппинг семантических токенов в утилиты Tailwind (@theme inline)
+ *   4. Базовые стили (минимальные, без дизайнерских решений)
+ *
+ * Правила:
+ *   - Цвета берём ТОЛЬКО из токенов (--color-*), не хардкодим hex в классах.
+ *   - Сложные/уникальные стили — через CSS Modules при необходимости.
+ *   - Перед реализацией дизайна изучи docs/DESIGN_REFERENCE.md.
+ */
+
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+/* Связываем семантические токены с утилитами Tailwind:
+   bg-background, text-foreground, text-muted, border-border, font-sans и т.д. */
+@theme inline {
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-fg);
+  --color-muted: var(--color-muted);
+  --color-border: var(--color-border);
+  --color-accent: var(--color-accent);
+  --color-accent-foreground: var(--color-accent-fg);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --text-xs: var(--text-xs);
+  --text-sm: var(--text-sm);
+  --text-base: var(--text-base);
+  --text-lg: var(--text-lg);
+  --text-xl: var(--text-xl);
+  --text-2xl: var(--text-2xl);
+  --text-3xl: var(--text-3xl);
+  --text-4xl: var(--text-4xl);
+  --text-5xl: var(--text-5xl);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-full: var(--radius-full);
+}
+
+@layer base {
+  html {
+    /* Плавный скролл — управляется JS-анимациями (GSAP ScrollTrigger);
+       scroll-behavior не смешиваем с JS-скроллом */
+    scroll-behavior: auto;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Уважение к reduced motion — обязательное требование доступности.
+     Подробности: docs/ANIMATION_GUIDELINES.md */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+# Артефакты сборки и зависимостей
+node_modules
+.next
+out
+build
+
+# Артефакты тестов и отчётов Playwright
+test-results
+playwright-report
+artifacts
+
+# Сгенерированные файлы
+next-env.d.ts
+package-lock.json
